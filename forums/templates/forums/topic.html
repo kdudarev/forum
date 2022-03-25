@@ -2,11 +2,25 @@
 
 {% block content %}
     <h2>{{ topic.title }}</h2>
-    <p>Posted by: {{ topic.owner }}
-        {{ topic.date_added|date:'d.m.Y H:i:s' }}</p>
-    <p>{{ topic.text|linebreaks }}</p>
+
     {% if request.user == topic.owner %}
         <p><a href="{% url 'forums:edit_topic' topic.id topic.slug%}">
                 Edit topic</a></p>
     {% endif %}
+
+    <p>Posted by: {{ topic.owner }}
+        {{ topic.date_added|date:'d.m.Y H:i:s' }}</p>
+    <p>{{ topic.text|linebreaks }}</p>
+    <p><small><i>{{ topic.comment_set.count }} Comments</i></small></p>
+
+    <p><a href="{% url 'forums:add_comment' topic.id topic.slug%}">
+        Add comment</a></p>
+
+    {% for c in topic.comment_set.all %}
+        <p><i>Posted by: {{ c.owner }}
+            {{ c.date_added|date:'d.m.Y H:i:s' }}</i></p>
+        <p><b>{{ c.text|linebreaks }}</b></p>
+    {% empty %}
+        <p>No comment have been added yet.</p>
+    {% endfor %}
 {% endblock content %}

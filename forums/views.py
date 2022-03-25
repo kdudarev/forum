@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.shortcuts import render, redirect
 
-from .forms import TopicForm
+from .forms import TopicForm, CommentForm
 from .models import Topic
 
 
@@ -20,7 +20,7 @@ def topic(request, topic_id, slug):
 
 
 @login_required
-def new_topic(request):
+def add_topic(request):
     if request.method != 'POST':
         form = TopicForm()
     else:
@@ -31,7 +31,7 @@ def new_topic(request):
             new_topic.save()
             return redirect('forums:index')
     context = {'form': form}
-    return render(request, 'forums/new_topic.html', context)
+    return render(request, 'forums/add_topic.html', context)
 
 
 @login_required
@@ -44,6 +44,22 @@ def edit_topic(request, topic_id, slug):
     else:
         form = TopicForm(instance=topic, data=request.POST)
         form.save()
-        return redirect('forums:topic', topic_id=topic.id, slug=topic.slug)
+        return redirect(topic.get_absolute_url())
     context = {'topic': topic, 'form': form}
     return render(request, 'forums/edit_topic.html', context)
+
+
+@login_required
+def add_comment(request, topic_id, slug):
+    topic = Topic.objects.get(id=topic_id, slug=slug)
+    if request.method != 'POST':
+        form = CommentForm()
+    else:
+        form = CommentForm(data=request.POST)
+        new_comment = form.save(commit=False)
+        new_comment.owner = request.user
+        new_comment.topic_id = topic.id
+        new_comment.save()
+        return redirect(topic.get_absolute_url())
+    context = {'topic': topic, 'form': form}
+    return render(request, 'forums/add_comment.html', context)

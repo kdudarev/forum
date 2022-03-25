@@ -3,12 +3,12 @@
 {% block content %}
     <p><a href="{{ topic.get_absolute_url }}">{{ topic }}</a></p>
 
-    <p>Edit topic:</p>
+    <p>Add a new comment:</p>
 
-    <form action="{% url 'forums:edit_topic' topic.id topic.slug %}"
+    <form action="{% url 'forums:add_comment' topic.id topic.slug %}"
           method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button name="submit">Save</button>
+        <button name="submit">Add comment</button>
     </form>
 {% endblock content %}

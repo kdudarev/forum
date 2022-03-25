@@ -32,10 +32,10 @@ class Comment(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     text = models.TextField()
     date_added = models.DateTimeField(auto_now_add=True)
-    forum_post = models.ForeignKey(Topic, on_delete=models.CASCADE)
+    topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f'{self.owner} - {self.forum_post}'
+        return f'{self.owner} - {self.topic}'
 
     class Meta:
         verbose_name = 'Comment'

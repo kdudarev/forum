@@ -15,4 +15,4 @@ class TopicAdmin(admin.ModelAdmin):
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ('owner', 'date_added', 'forum_post')
+    list_display = ('owner', 'date_added', 'topic')
