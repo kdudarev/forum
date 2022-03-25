@@ -8,8 +8,12 @@
 
 {% block content %}
     {% if request.user == topic.owner %}
-        <p><a href="{% url 'forums:edit_topic' topic.id topic.slug%}">
-                Edit topic</a></p>
+        <p><button type="button" class="btn btn-outline-primary">
+            <a href="{% url 'forums:edit_topic' topic.id topic.slug%}">
+                Edit topic</a></button>
+            <button type="button" class="btn btn-outline-danger">
+                <a href="{% url 'forums:delete_topic' topic.id topic.slug %}">
+                    Delete topic</a></button></p>
     {% endif %}
 
     <p><i>Posted by: {{ topic.owner }}
@@ -31,11 +35,13 @@
     </form>
 
     {% for comment in topic.get_comment %}
+        <hr>
         <p><i>Posted by: {{ comment.owner }}
             {{ comment.date_added|date:'d.m.Y H:i:s' }}</i></p>
         <h5>{{ comment.text|linebreaks }}</h5>
-        <p></p><a href="#formComment" onclick="addComment('{{ comment.owner }}',
-        '{{ comment.id }}')">Reply</a></p>
+        <button type="button" class="btn btn-outline-primary">
+            <a href="#formComment" onclick="addComment('{{ comment.owner }}',
+        '{{ comment.id }}')">Reply</a></button></p>
         {% for c in comment.comment_set.all %}
             <ul>
                 <p><i>Posted by: {{ c.owner }}
@@ -44,6 +50,7 @@
             </ul>
         {% endfor %}
     {% empty %}
+        <hr>
         <h5>No comment have been added yet.</h5>
     {% endfor %}
 

@@ -1,6 +1,8 @@
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
+from django.views.generic import DeleteView
 
 from .forms import TopicForm, CommentForm
 from .models import Topic
@@ -12,7 +14,6 @@ def index(request):
     return render(request, 'forums/index.html', context)
 
 
-@login_required
 def topic(request, topic_id, slug):
     topic = Topic.objects.get(id=topic_id, slug=slug)
     if request.method != 'POST':
@@ -60,3 +61,9 @@ def edit_topic(request, topic_id, slug):
             return redirect(topic.get_absolute_url())
     context = {'topic': topic, 'form': form}
     return render(request, 'forums/edit_topic.html', context)
+
+
+class DeleteTopicView(DeleteView):
+    model = Topic
+    success_url = reverse_lazy('forums:index')
+    template_name = 'forums/delete_topic.html'

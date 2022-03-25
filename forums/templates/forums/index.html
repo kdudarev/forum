@@ -5,9 +5,11 @@
 {% endblock page_header %}
 
 {% block content %}
-    <p><h5><ins>
-        <a href="{% url 'forums:add_topic' %}">Add a new topic</a>
-    </ins></h5></p>
+    <p>
+        <button type="button" class="btn btn-outline-primary">
+            <a href="{% url 'forums:add_topic' %}">Add a new topic</a>
+        </button>
+    </p>
 
     {% for t in topics %}
         <p>

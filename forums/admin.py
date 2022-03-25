@@ -5,11 +5,10 @@ from forums.models import Topic, Comment
 
 @admin.register(Topic)
 class TopicAdmin(admin.ModelAdmin):
-    list_display = ('title', 'date_added', 'owner', 'draft')
+    list_display = ('title', 'date_added', 'owner')
     list_display_links = ('title',)
     list_filter = ('owner',)
     search_fields = ('title',)
-    list_editable = ('draft',)
     prepopulated_fields = {'slug': ('title',)}
 
 
