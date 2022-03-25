@@ -5,6 +5,8 @@
     <p>Posted by: {{ topic.owner }}
         {{ topic.date_added|date:'d.m.Y H:i:s' }}</p>
     <p>{{ topic.text|linebreaks }}</p>
-    <p><a href="{% url 'forums:edit_topic' topic.id topic.slug%}">
-            Edit topic</a></p>
+    {% if request.user == topic.owner %}
+        <p><a href="{% url 'forums:edit_topic' topic.id topic.slug%}">
+                Edit topic</a></p>
+    {% endif %}
 {% endblock content %}
