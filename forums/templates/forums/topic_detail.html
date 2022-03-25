@@ -1,5 +1,4 @@
 {% extends "layout/base.html" %}
-
 {% load bootstrap4 %}
 
 {% block page_header %}
@@ -35,27 +34,33 @@
     <p><i>{{ topic.comment_set.count }}
         Comment{{ topic.comment_set.count|pluralize }}</i></p>
 
-    <p><b>Comment as <ins>{{ user.username }}</ins>:</b></p>
+    {% if user.is_authenticated %}
+        <p><b>Comment as <ins>{{ user.username }}</ins>:</b></p>
 
-    <form action="." method="post" class="form" id="formComment">
-        {% csrf_token %}
-        <input type="hidden" name="parent" id="contactparent" value="">
-        <textarea cols="80" rows="6" name="text"
-                  id="contactcomment" required=""></textarea>
-        {% buttons %}
-            <button name="submit" class="btn btn-outline-primary">
-                Add comment</button>
-        {% endbuttons %}
-    </form>
+        <form action="." method="post" class="form" id="formComment">
+            {% csrf_token %}
+            <input type="hidden" name="parent" id="contactparent" value="">
+            <textarea cols="80" rows="6" name="text"
+                      id="contactcomment" required=""
+                      placeholder="What are your thoughts?"></textarea>
+            {% buttons %}
+                <button name="submit" class="btn btn-outline-primary">
+                    Add comment</button>
+            {% endbuttons %}
+        </form>
+    {% endif %}
 
     {% for comment in topic.get_comment %}
         <hr>
         <p><i>Posted by: {{ comment.owner }}
             {{ comment.date_added|date:'d.m.Y H:i:s' }}</i></p>
         <h5>{{ comment.text|linebreaks }}</h5>
-        <button type="button" class="btn btn-outline-primary">
-            <a href="#formComment" onclick="addComment('{{ comment.owner }}',
-        '{{ comment.id }}')">Reply</a></button></p>
+        {% if user.is_authenticated %}
+            <button type="button" class="btn btn-outline-primary">
+                <a href="#formComment"
+                   onclick="addComment('{{ comment.owner }}',
+            '{{ comment.id }}')">Reply</a></button></p>
+        {% endif %}
         {% for c in comment.comment_set.all %}
             <ul>
                 <p><i>Posted by: {{ c.owner }}

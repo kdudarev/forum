@@ -1,5 +1,4 @@
 {% extends "layout/base.html" %}
-
 {% load bootstrap4 %}
 
 {% block page_header %}
@@ -8,24 +7,27 @@
 {% endblock page_header %}
 
 {% block content %}
-    <p>
-        <form action="." method="post" class="form">
-            {% csrf_token %}
-            {% bootstrap_form form %}
-            {% buttons %}
-                <button name="submit" class="btn btn-danger">
-                    Yes, I`m sure</button>
-            {% endbuttons %}
-        </form>
+    {% if user.is_authenticated %}
+        <p>
+            <form action="." method="post" class="form">
+                {% csrf_token %}
+                {% buttons %}
+                    <button name="submit" class="btn btn-danger">
+                        Yes, I`m sure</button>
+                {% endbuttons %}
+            </form>
 
-        <form action="{{ topic.get_absolute_url }}"
-              method="post" class="form">
-            {% csrf_token %}
-            {% bootstrap_form form %}
-            {% buttons %}
-                <button name="submit" class="btn btn-secondary">
-                    No, take me back</button>
-            {% endbuttons %}
-        </form>
-    </p>
+            <form action="{{ topic.get_absolute_url }}"
+                  method="post" class="form">
+                {% csrf_token %}
+                {% buttons %}
+                    <button name="submit" class="btn btn-secondary">
+                        No, take me back</button>
+                {% endbuttons %}
+            </form>
+        </p>
+    {% else %}
+        <br/><br/>
+        <h3>You can't do this, this is not your topic!</h3>
+    {% endif %}
 {% endblock content %}

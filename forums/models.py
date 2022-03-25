@@ -16,7 +16,7 @@ class Topic(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('forums:topic', args=[self.id, self.slug])
+        return reverse('forums:topic_detail', args=[self.id, self.slug])
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
