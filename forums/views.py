@@ -15,7 +15,19 @@ def index(request):
 @login_required
 def topic(request, topic_id, slug):
     topic = Topic.objects.get(id=topic_id, slug=slug)
-    context = {'topic': topic}
+    if request.method != 'POST':
+        form = CommentForm()
+    else:
+        form = CommentForm(data=request.POST)
+        if form.is_valid():
+            form = form.save(commit=False)
+            if request.POST.get("parent", None):
+                form.parent_id = int(request.POST.get("parent"))
+            form.owner = request.user
+            form.topic = topic
+            form.save()
+            return redirect(topic.get_absolute_url())
+    context = {'topic': topic, 'form': form}
     return render(request, 'forums/topic.html', context)
 
 
@@ -43,23 +55,8 @@ def edit_topic(request, topic_id, slug):
         form = TopicForm(instance=topic)
     else:
         form = TopicForm(instance=topic, data=request.POST)
-        form.save()
-        return redirect(topic.get_absolute_url())
+        if form.is_valid():
+            form.save()
+            return redirect(topic.get_absolute_url())
     context = {'topic': topic, 'form': form}
     return render(request, 'forums/edit_topic.html', context)
-
-
-@login_required
-def add_comment(request, topic_id, slug):
-    topic = Topic.objects.get(id=topic_id, slug=slug)
-    if request.method != 'POST':
-        form = CommentForm()
-    else:
-        form = CommentForm(data=request.POST)
-        new_comment = form.save(commit=False)
-        new_comment.owner = request.user
-        new_comment.topic_id = topic.id
-        new_comment.save()
-        return redirect(topic.get_absolute_url())
-    context = {'topic': topic, 'form': form}
-    return render(request, 'forums/add_comment.html', context)

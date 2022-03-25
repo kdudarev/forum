@@ -11,16 +11,40 @@
     <p>Posted by: {{ topic.owner }}
         {{ topic.date_added|date:'d.m.Y H:i:s' }}</p>
     <p>{{ topic.text|linebreaks }}</p>
-    <p><small><i>{{ topic.comment_set.count }} Comments</i></small></p>
+    <p><small><i>{{ topic.comment_set.count }}
+        Comment{{ topic.comment_set.count|pluralize }}</i></small></p>
 
-    <p><a href="{% url 'forums:add_comment' topic.id topic.slug%}">
-        Add comment</a></p>
+    <p>Comment as <ins>{{ user.username }}</ins>:</p>
 
-    {% for c in topic.comment_set.all %}
-        <p><i>Posted by: {{ c.owner }}
-            {{ c.date_added|date:'d.m.Y H:i:s' }}</i></p>
-        <p><b>{{ c.text|linebreaks }}</b></p>
+    <form action="." method="post" id="formComment">
+        {% csrf_token %}
+        <input type="hidden" name="parent" id="contactparent" value="">
+        <textarea cols="60" rows="8" name="text"
+                  id="contactcomment" required=""></textarea>
+        <button name="submit">Add comment</button>
+    </form>
+
+    {% for comment in topic.get_comment %}
+        <p><i>Posted by: {{ comment.owner }}
+            {{ comment.date_added|date:'d.m.Y H:i:s' }}</i></p>
+        <p><b>{{ comment.text|linebreaks }}</b></p>
+        <a href="#formComment" onclick="addComment('{{ comment.owner }}',
+        '{{ comment.id }}')">Reply</a>
+        {% for c in comment.comment_set.all %}
+            <ul>
+                <p><i>Posted by: {{ c.owner }}
+                {{ c.date_added|date:'d.m.Y H:i:s' }}</i></p>
+                <p><b>{{ c.text|linebreaks }}</b></p>
+            </ul>
+        {% endfor %}
     {% empty %}
         <p>No comment have been added yet.</p>
     {% endfor %}
+
+    <script>
+        function addComment(owner, id) {
+            document.getElementById("contactparent").value = id;
+            document.getElementById("contactcomment").innerText = `${owner}, `
+        }
+    </script>
 {% endblock content %}

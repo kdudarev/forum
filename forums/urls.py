@@ -11,6 +11,4 @@ urlpatterns = [
     path('add_topic/', views.add_topic, name='add_topic'),
     path('edit_topic/<int:topic_id>/<slug:slug>/',
          views.edit_topic, name='edit_topic'),
-    path('add_comment/<int:topic_id>/<slug:slug>/',
-         views.add_comment, name='add_comment'),
 ]
