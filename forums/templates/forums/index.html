@@ -1,6 +1,8 @@
 {% extends "layout/base.html" %}
 
 {% block content %}
+    <h1>Topics:</h1>
+    <a href="{% url 'forums:new_topic' %}">Add a new topic</a>
     {% for t in topics %}
         <div>
             <h2><a href="{{ t.get_absolute_url }}">{{ t.title }}</a></h2>
