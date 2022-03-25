@@ -40,6 +40,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     # My apps
     'forums',
+    'users',
 
     # Django apps
     'django.contrib.admin',
