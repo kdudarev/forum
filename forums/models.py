@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.urls import reverse
 
 
 class Topic(models.Model):
@@ -7,7 +8,7 @@ class Topic(models.Model):
     text = models.TextField(null=True, blank=True)
     date_added = models.DateTimeField(auto_now_add=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
-    url = models.SlugField(max_length=150, unique=True)
+    slug = models.SlugField(max_length=150, unique=True)
     draft = models.BooleanField(default=False)
 
     def __str__(self):
@@ -17,6 +18,9 @@ class Topic(models.Model):
         verbose_name = 'Topic'
         verbose_name_plural = 'Topics'
         ordering = ['-date_added']
+
+    def get_absolute_url(self):
+        return reverse('forums:topic', args=[self.id, self.slug])
 
 
 class Comment(models.Model):

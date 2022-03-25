@@ -1,0 +1,12 @@
+{% extends "layout/base.html" %}
+
+{% block content %}
+    {% for t in topics %}
+        <div>
+            <h2><a href="{{ t.get_absolute_url }}">{{ t.title }}</a></h2>
+            <p>{{ t.date_added|date:'d.m.Y H:i:s' }}</p>
+        </div>
+    {% empty %}
+        <p>No topic have been added yet.</p>
+    {% endfor %}
+{% endblock content %}

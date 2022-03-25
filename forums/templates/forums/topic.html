@@ -1,0 +1,7 @@
+{% extends "layout/base.html" %}
+
+{% block content %}
+    <h2>{{ topic.title }}</h2>
+    <p>Posted by: {{ topic.owner }} {{ topic.date_added|date:'d.m.Y H:i:s' }}</p>
+    <p>{{ topic.text|linebreaks }}</p>
+{% endblock content %}
