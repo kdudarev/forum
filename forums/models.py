@@ -10,6 +10,7 @@ class Topic(models.Model):
     date_added = models.DateTimeField(auto_now_add=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     slug = models.SlugField(max_length=75, blank=True)
+    likes = models.ManyToManyField(User, related_name='topic_likes')
 
     def __str__(self):
         return self.title

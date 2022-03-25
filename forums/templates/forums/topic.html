@@ -19,6 +19,19 @@
     <p><i>Posted by: {{ topic.owner }}
         {{ topic.date_added|date:'d.m.Y H:i:s' }}</i></p>
     <h5>{{ topic.text|linebreaks }}</h5>
+
+    <form action="{% url 'forums:like_topic' topic.id topic.slug %}"
+          method="post" class="form">
+        {% csrf_token %}
+        {% buttons %}
+            <p><button name="submit"
+                       class="btn {% if user in topic.likes.all %}btn-primary
+                       {% else %}btn-outline-primary{% endif %}">
+                Like</button> - <i>{{ topic.likes.count }}
+                Like{{ topic.likes.count|pluralize }}</i></p>
+        {% endbuttons %}
+    </form>
+
     <p><i>{{ topic.comment_set.count }}
         Comment{{ topic.comment_set.count|pluralize }}</i></p>
 
@@ -30,7 +43,8 @@
         <textarea cols="80" rows="6" name="text"
                   id="contactcomment" required=""></textarea>
         {% buttons %}
-            <button name="submit" class="btn btn-primary">Add comment</button>
+            <button name="submit" class="btn btn-outline-primary">
+                Add comment</button>
         {% endbuttons %}
     </form>
 

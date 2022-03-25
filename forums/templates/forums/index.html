@@ -12,9 +12,14 @@
     </p>
 
     {% for t in topics %}
+        <br>
         <p>
+            <i>Posted by: {{ t.owner }}
+                {{ t.date_added|date:'d.m.Y H:i:s' }}</i>
             <h3><a href="{{ t.get_absolute_url }}">{{ t.title }}</a></h3>
-            <h5>{{ t.date_added|date:'d.m.Y H:i:s' }}</h5>
+            <i>{{ t.likes.count }} Like{{ t.likes.count|pluralize }}
+                {{ t.comment_set.count }}
+                Comment{{ t.comment_set.count|pluralize }}</i>
         </p>
     {% empty %}
         <h3>No topic have been added yet.</h3>

@@ -67,3 +67,12 @@ class DeleteTopicView(DeleteView):
     model = Topic
     success_url = reverse_lazy('forums:index')
     template_name = 'forums/delete_topic.html'
+
+
+def like_topic(request, topic_id, slug):
+    topic = Topic.objects.get(id=topic_id, slug=slug)
+    if topic.likes.filter(id=request.user.id).exists():
+        topic.likes.remove(request.user)
+    else:
+        topic.likes.add(request.user)
+    return redirect(topic.get_absolute_url())
