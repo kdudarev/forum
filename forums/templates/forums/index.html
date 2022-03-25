@@ -1,14 +1,20 @@
 {% extends "layout/base.html" %}
 
+{% block page_header %}
+    <h1>Topics</h1>
+{% endblock page_header %}
+
 {% block content %}
-    <h1>Topics:</h1>
-    <a href="{% url 'forums:add_topic' %}">Add a new topic</a>
+    <p><h5><ins>
+        <a href="{% url 'forums:add_topic' %}">Add a new topic</a>
+    </ins></h5></p>
+
     {% for t in topics %}
-        <div>
-            <h2><a href="{{ t.get_absolute_url }}">{{ t.title }}</a></h2>
-            <p>{{ t.date_added|date:'d.m.Y H:i:s' }}</p>
-        </div>
+        <p>
+            <h3><a href="{{ t.get_absolute_url }}">{{ t.title }}</a></h3>
+            <h5>{{ t.date_added|date:'d.m.Y H:i:s' }}</h5>
+        </p>
     {% empty %}
-        <p>No topic have been added yet.</p>
+        <h3>No topic have been added yet.</h3>
     {% endfor %}
 {% endblock content %}

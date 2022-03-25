@@ -1,11 +1,20 @@
 {% extends "layout/base.html" %}
 
-{% block content %}
-    <p>Add a new topic:</p>
+{% load bootstrap4 %}
 
-    <form action="{% url 'forums:add_topic' %}" method="post">
+{% block page_header %}
+    <h1>New topic</h1>
+{% endblock page_header %}
+
+{% block content %}
+    <h5>Add a new topic:</h5>
+
+    <form action="{% url 'forums:add_topic' %}" method="post"
+          class="form">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button name="submit">Add topic</button>
+        {% bootstrap_form form %}
+        {% buttons %}
+            <button name="submit" class="btn btn-primary">Add topic</button>
+        {% endbuttons %}
     </form>
 {% endblock content %}

@@ -42,6 +42,9 @@ INSTALLED_APPS = [
     'forums',
     'users',
 
+    # Third party apps
+    'bootstrap4',
+
     # Django apps
     'django.contrib.admin',
     'django.contrib.auth',
