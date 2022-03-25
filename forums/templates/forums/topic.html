@@ -2,6 +2,9 @@
 
 {% block content %}
     <h2>{{ topic.title }}</h2>
-    <p>Posted by: {{ topic.owner }} {{ topic.date_added|date:'d.m.Y H:i:s' }}</p>
+    <p>Posted by: {{ topic.owner }}
+        {{ topic.date_added|date:'d.m.Y H:i:s' }}</p>
     <p>{{ topic.text|linebreaks }}</p>
+    <p><a href="{% url 'forums:edit_topic' topic.id topic.slug%}">
+            Edit topic</a></p>
 {% endblock content %}

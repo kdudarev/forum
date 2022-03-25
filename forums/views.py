@@ -26,3 +26,15 @@ def new_topic(request):
             return redirect('forums:index')
     context = {'form': form}
     return render(request, 'forums/new_topic.html', context)
+
+
+def edit_topic(request, topic_id, slug):
+    topic = Topic.objects.get(id=topic_id, slug=slug)
+    if request.method != 'POST':
+        form = TopicForm(instance=topic)
+    else:
+        form = TopicForm(instance=topic, data=request.POST)
+        form.save()
+        return redirect('forums:topic', topic_id=topic.id, slug=topic.slug)
+    context = {'topic': topic, 'form': form}
+    return render(request, 'forums/edit_topic.html', context)
