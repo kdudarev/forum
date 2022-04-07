@@ -28,7 +28,7 @@ DATABASES = {
     }
 }
 ```
-**4. Use virtualenv to install requirements:**
+**4. Use virtual environment to install requirements:**
 ```
 pip install -r requirements.txt
 ```
